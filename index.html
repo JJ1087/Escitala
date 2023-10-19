@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cifrado Escítala</title>
+</head>
+<body>
+    <div>
+        <h1>CIFRADO DE TRASPOSICIÓN A TRAVÉS DE LA ESCITALA</h1>
+        <div>
+            <div>
+                <div>
+                    <label for="mensajeC">Mensaje:</label>
+                    <input type="text" id="mensajeC"/>
+                </div>
+                <br>
+                <div>
+                    <label for="key">Numero de lados:</label>
+                    <input type="number"  id="key"/>
+                </div>
+                <br>
+                <button onclick="fnEncriptar()">Cifrar</button>
+                <button onclick="fnDessencriptar()">Descifrar</button>
+            </div>
+            <div>
+                <h2>Mensaje cifrado:</h2>
+                <div id="txtCifrado"></div>
+                <h2>Mensaje descifrado:</h2>
+                <div id="txtDescifrado"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function fnEncriptar() {
+            const msj= document.getElementById("mensajeC").value;
+            const clave = parseInt(document.getElementById("key").value, 10);
+            const mensajeEncriptado = metEsciCifrar(msj, clave);
+            document.getElementById("txtCifrado").textContent = mensajeEncriptado;
+        }
+        function fnDessencriptar() {
+            const mensajeEncriptado1= document.getElementById("txtCifrado").textContent;
+            const key = parseInt(document.getElementById("key").value, 10);
+            const mensajeDes = metEsciDescifrar(mensajeEncriptado1, key);
+            document.getElementById("txtDescifrado").textContent = mensajeDes;
+        }
+        function metEsciCifrar(msj, key) {
+            const rows = Math.ceil(msj.length / key);
+            const result = new Array(rows);
+
+            for (let i = 0; i < rows; i++) {
+                result[i] = new Array(key);
+            }
+            let indice = 0;
+            for (let a = 0; a < rows; a++) {
+                for (let j = 0; j < key; j++) {
+                    if (indice < msj.length) {
+                        result[a][j] = msj[indice];
+                        indice++;
+                    } else {
+                        result[a][j] = ' ';
+                    }
+                }
+            }
+            let mensajeEncriptado = '';
+            for (let j = 0; j < key; j++) {
+                for (let i = 0; i < rows; i++) {
+                    mensajeEncriptado += result[i][j];
+                }
+            }
+            return mensajeEncriptado;
+        }
+        function metEsciDescifrar(mensajeEncriptado, key) {
+            const rows = Math.ceil(mensajeEncriptado.length /key);
+            const result = new Array(rows);
+
+            for (let i = 0; i < rows; i++) {
+                result[i] = new Array(key);
+            }
+
+            let index = 0;
+
+            for (let j = 0; j < key; j++) {
+                for (let i = 0; i < rows; i++) {
+                    result[i][j] = mensajeEncriptado[index];
+                    index++;
+                }
+            }
+            let mensajeDesencrip = '';
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < key; j++) {
+                    mensajeDesencrip += result[i][j];
+                }
+            }
+            return mensajeDesencrip.trim();
+        }
+    </script>
+</body>
+</html>
